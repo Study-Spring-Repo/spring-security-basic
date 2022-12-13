@@ -1,6 +1,6 @@
-# 스프링 시큐리티
+# 스프링 시큐리티 기본 API & Filter 이해
 
-## 01. 프로젝트 구성 및 의존성 추가
+## 인증 API - 01. 프로젝트 구성 및 의존성 추가
 
 [[01-01] : 시큐리티 프로젝트 구성](https://github.com/Study-Spring-Repo/spring-security-basic/commit/3bc8917d1469fd11655d72a9de7f98605f1d123b)
 
@@ -21,7 +21,7 @@ implementation 'org.springframework.boot:spring-boot-starter-security:2.5.3'
 <img alt="img.png" height="150" src="images/section01/02.png" width="200"/>
 
 
-> 1. 인증 API - 스프링 시큐리티 의존성 추가
+> 인증 API - 01. 프로젝트 구성 및 의존성 추가
 > 
 > - 스프링 시큐리티 의존성 추가 시 발생
 >   - 서버가 가동시
@@ -37,18 +37,18 @@ implementation 'org.springframework.boot:spring-boot-starter-security:2.5.3'
 >   - 기본적인 보안 기능 외에 
 >     - 시스템에서 필요로 하는 더 세부적이고 추가적인 보안 기능이 필요
 
-## 02. 사용자 정의 보안 기능 구현
+## 인증 API - 02. 사용자 정의 보안 기능 구현
 
-[[01-02]]()
+[[01-02] : 사용자 정의 보안 기능](https://github.com/Study-Spring-Repo/spring-security-basic/commit/6c3c48b0da7ad3c6eb488620850c995e069f34ad)
 
-> 1. 인증 API - 사용자 정의 보안 기능 구현
+> 인증 API - 02. 사용자 정의 보안 기능 구현
 > 
-> - WebSecurityConfigurerAdapter
+> - WebSecurityConfigurerAdapter ⭐️
 >   - 스프링 시큐리티의 웹 보안 기능 초기화 및 설정
 > - SecurityConfig
->   - 사용자 정의 보안 설정 클래스
+    >   - 사용자 정의 보안 설정 클래스
 > - HttpSecurity
->   - 세부적인 보안 기능을 설정할 수 있는 API 제공
+    >   - 세부적인 보안 기능을 설정할 수 있는 API 제공
 >   - 인증 API
 >     - http.formLogin()
 >     - http.login()
@@ -64,11 +64,13 @@ implementation 'org.springframework.boot:spring-boot-starter-security:2.5.3'
 
 - 아무런 설정없이 security 의존 추가만으로도 보안 기능이 설정되는 이유
     - WebSecurityConfigurerAdapter 클래스 내에 configure 메서드 때문이다.
-      <img alt="img.png" height="250" src="images/section02/01.png" width="600"/>
+  
+<img alt="img.png" height="300" src="images/section02/01.png" width="600"/>
 
 - @EnableWebSecurity
   - 각종 웹 보안을 불러온다.
-    <img alt="img.png" height="250" src="img.png" width="600"/>
+  
+<img alt="img.png" height="250" src="img.png" width="600"/>
 
 - SecurityConfig
   - WebSecurityConfigurerAdapter를 상속 받아 configure를 재정의한다.
@@ -96,4 +98,54 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 # application.properties
 spring.security.user.name=user
 spring.security.user.password=1111
+```
+
+## 인증 API - 03. Form 인증
+
+[[01-03] : Form 인증 로그인 기능]()
+
+> 인증 API - 03. Form 인증능
+> 
+> `http.formLogin()` : Form 로그인 인증 기능이 작동한다.
+>
+```java
+@Override
+protected void configure(HttpSecurity http) throws Exception {
+    
+    // 인증 정책
+    http.formLogin()
+            // 사용자 정의 로그인 페이지
+            .loginPage("/loginPage")
+
+            // 로그인 성공 후 이동 페이지
+            // 이 경로는 누구나 접근 가능하도록 해야 한다.
+            .defaultSuccessUrl("/")
+        
+            // 로그인 실패 후 이동 페이지
+            .failureUrl("/login")
+        
+            // 아이디 파라미터명 설정
+            .usernameParameter("userId")
+        
+            // 패스워드 파라미터명 설정
+            .passwordParameter("passwd")
+        
+            // 로그인 Form Action Url
+            .loginProcessingUrl("/login_proc")
+
+            // 로그인 성공 후 핸들러
+            // AuthenticationSuccessHandler
+            .successHandler((request, response, auth) -> {
+                System.out.println("authentication : " + auth.getName());
+                response.sendRedirect("/");
+            })
+            
+            // 로그인 실패 후 핸들러
+            //AuthenticationFailureHandler
+            .failureHandler((request, response, exception) -> {
+                System.out.println("exception : " + exception.getMessage());
+                 response.sendRedirect("/login");
+            })
+            .permitAll();
+}
 ```
