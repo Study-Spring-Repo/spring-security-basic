@@ -1,6 +1,8 @@
 # 스프링 시큐리티
 
-## 1. 프로젝트 구성 및 의존성 추가
+## 01. 프로젝트 구성 및 의존성 추가
+
+[[01-01] : 시큐리티 프로젝트 구성](https://github.com/Study-Spring-Repo/spring-security-basic/commit/3bc8917d1469fd11655d72a9de7f98605f1d123b)
 
 - 의존성을 추가한다.
 
@@ -19,7 +21,7 @@ implementation 'org.springframework.boot:spring-boot-starter-security:2.5.3'
 <img alt="img.png" height="150" src="images/section01/02.png" width="200"/>
 
 
-> ### 1. 인증 API - 스프링 시큐리티 의존성 추가
+> 1. 인증 API - 스프링 시큐리티 의존성 추가
 > 
 > - 스프링 시큐리티 의존성 추가 시 발생
 >   - 서버가 가동시
@@ -34,3 +36,64 @@ implementation 'org.springframework.boot:spring-boot-starter-security:2.5.3'
 >   - 계정 추가, 권한 추가, DB 연동
 >   - 기본적인 보안 기능 외에 
 >     - 시스템에서 필요로 하는 더 세부적이고 추가적인 보안 기능이 필요
+
+## 02. 사용자 정의 보안 기능 구현
+
+[[01-02]]()
+
+> 1. 인증 API - 사용자 정의 보안 기능 구현
+> 
+> - WebSecurityConfigurerAdapter
+>   - 스프링 시큐리티의 웹 보안 기능 초기화 및 설정
+> - SecurityConfig
+>   - 사용자 정의 보안 설정 클래스
+> - HttpSecurity
+>   - 세부적인 보안 기능을 설정할 수 있는 API 제공
+>   - 인증 API
+>     - http.formLogin()
+>     - http.login()
+>     - http.csrf()
+>     - ...
+>   - 인가 API
+>     - http.authorizeRequests()
+>       - .antMatchers(/admin)
+>       - .hasRole(USER)
+>       - .permitAll()
+>       - ...
+    
+
+- 아무런 설정없이 security 의존 추가만으로도 보안 기능이 설정되는 이유
+    - WebSecurityConfigurerAdapter 클래스 내에 configure 메서드 때문이다.
+      <img alt="img.png" height="250" src="images/section02/01.png" width="600"/>
+
+- @EnableWebSecurity
+  - 각종 웹 보안을 불러온다.
+    <img alt="img.png" height="250" src="img.png" width="600"/>
+
+- SecurityConfig
+  - WebSecurityConfigurerAdapter를 상속 받아 configure를 재정의한다.
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+
+        // 인가 정책
+        http.authorizeRequests()
+                .anyRequest()
+                .authenticated();
+
+        // 인증 정책
+        http.formLogin();
+    }
+}
+```
+- application.properties 에 메모리 사용자로 user와 password를 등록할 수 있다.
+
+```properties
+# application.properties
+spring.security.user.name=user
+spring.security.user.password=1111
+```
