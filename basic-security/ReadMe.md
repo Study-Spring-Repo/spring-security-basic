@@ -70,7 +70,7 @@ implementation 'org.springframework.boot:spring-boot-starter-security:2.5.3'
 - @EnableWebSecurity
   - 각종 웹 보안을 불러온다.
   
-<img alt="img.png" height="250" src="img.png" width="600"/>
+<img alt="img.png" height="250" src="images/section03/img.png" width="600"/>
 
 - SecurityConfig
   - WebSecurityConfigurerAdapter를 상속 받아 configure를 재정의한다.
@@ -102,9 +102,9 @@ spring.security.user.password=1111
 
 ## 인증 API - 03. Form 인증
 
-[[01-03] : Form 인증 로그인 기능]()
+[[01-03] : Form 인증 로그인 기능](https://github.com/Study-Spring-Repo/spring-security-basic/commit/c0b027e25ea8374d9d378073008bde8c14484f33)
 
-> 인증 API - 03. Form 인증능
+> 인증 API - 03. Form 인증 기능
 > 
 > `http.formLogin()` : Form 로그인 인증 기능이 작동한다.
 >
@@ -149,3 +149,11 @@ protected void configure(HttpSecurity http) throws Exception {
             .permitAll();
 }
 ```
+
+## 인증 API - 04. UsernamePasswordAuthenticationFilter
+
+![img.png](images/section04/img.png)
+
+![img.png](images/section04/img_3.png)
+
+![img.png](images/section04/img_2.png)
