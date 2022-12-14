@@ -150,10 +150,14 @@ protected void configure(HttpSecurity http) throws Exception {
 }
 ```
 
-## 인증 API - 04. UsernamePasswordAuthenticationFilter
+## 인증 API - 04. 로그인 인증 필터 : UsernamePasswordAuthenticationFilter
 
-![img.png](images/section04/img.png)
+[[01-04] : 로그인 인증 필터 UsernamePasswordAuthenticationFilter](https://github.com/Study-Spring-Repo/spring-security-basic/commit/b40f736b7a31d769cd0ebc73f78448a247744635)
+
+<img alt="img.png" height="2400" src="images/section04/img.png" width="700"/>
 
 ![img.png](images/section04/img_3.png)
 
 ![img.png](images/section04/img_2.png)
+
+## 인증 API - 05. Logout
